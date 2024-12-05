@@ -22,19 +22,20 @@ export default function Index() {
     { value: 0, label: "Saturday" },
     { value: 0, label: "Sunday" },
   ]);
-  const handleChart = () =>{
-    router.push("/Chart?key=WaterIntake")
-  }
+  const handleChart = () => {
+    router.navigate({ pathname: "/Chart", params: { key: "WaterIntake" } });
+  };
 
-  const handlePreviousData = () =>{
-    router.push("/previousData")
-  }
+  const handlePreviousData = () => {
+    router.navigate("/previousData");
+  };
 
-  const getPreviousDayWeekLabel = () => {    // FUNCTION TO  GET THE WEEK OF THE MONTH
+  const getPreviousDayWeekLabel = () => {
+    // FUNCTION TO  GET THE WEEK AND THE MONTH
     const currentDate = new Date();
-    const previousDay = new Date(currentDate); 
-    previousDay.setDate(currentDate.getDate() - 1); 
-    const monthName = previousDay.toLocaleString("en-US", { month: "long" }); 
+    const previousDay = new Date(currentDate);
+    previousDay.setDate(currentDate.getDate() - 1);
+    const monthName = previousDay.toLocaleString("en-US", { month: "long" });
     const firstDateOfMonth = new Date(
       previousDay.getFullYear(),
       previousDay.getMonth(),
@@ -65,30 +66,35 @@ export default function Index() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const storedData = await AsyncStorage.getItem("WaterIntake");
+        const storedData = await AsyncStorage.getItem("WaterIntake"); //LOAD DATA STORED IN WATERINTAKE KEY
         const resetFlag = await AsyncStorage.getItem("WeekReset");
         const todayIndex = getDayIndex();
 
-  
         if (storedData) {
           const parsedData = JSON.parse(storedData);
-  
-          if (todayIndex === 0) { // IF MONDAY
-            if (resetFlag === "true") {  // AND  THE RESET FLAG IS TRUE
+
+          if (todayIndex === 0) {
+            // IF MONDAY
+            if (resetFlag === "true") {
+              // AND  THE RESET FLAG IS TRUE
               const weekLabel = getPreviousDayWeekLabel();
-  
+
               await AsyncStorage.setItem(weekLabel, JSON.stringify(parsedData)); // SAVE THE PREVIOUS WEEK DATA UNDER WEEK LABEL
               console.log("Data saved under label:", weekLabel, parsedData);
-  
-              const resetData = barData.map((day) => ({ ...day, value: 0 })); // AND RESET DATA TO 0 
+
+              const resetData = barData.map((day) => ({ ...day, value: 0 })); // AND RESET DATA TO 0
               setBarData(resetData);
-              await AsyncStorage.setItem("WaterIntake", JSON.stringify(resetData));
-              await AsyncStorage.setItem("WeekReset", "false");  // AND TURN THE FLAG FALSE 
+              await AsyncStorage.setItem(
+                "WaterIntake",
+                JSON.stringify(resetData)
+              );
+              await AsyncStorage.setItem("WeekReset", "false"); // AND TURN THE FLAG FALSE
             } else {
-              setBarData(parsedData); 
+              setBarData(parsedData);
             }
           } else {
-            if (resetFlag !== "true") {  // 
+            if (resetFlag !== "true") {
+              //
               await AsyncStorage.setItem("WeekReset", "true");
             }
             setBarData(parsedData);
@@ -104,25 +110,28 @@ export default function Index() {
             { value: 0, label: "Sunday" },
           ];
           setBarData(initialData);
-          await AsyncStorage.setItem("WaterIntake", JSON.stringify(initialData));
+          await AsyncStorage.setItem(
+            "WaterIntake",
+            JSON.stringify(initialData)
+          );
           await AsyncStorage.setItem("WeekReset", "true");
         }
       } catch (error) {
         console.error("Error in loadData:", error);
       }
     };
-  
+
     loadData();
   }, []);
-  
 
-  const handleInputChange = (text: string) => { // FOR CONVERTING STRING INTO NUMBERS ONLY
+  const handleInputChange = (text: string) => {
+    // FOR CONVERTING STRING INTO NUMBERS ONLY
     if (/^\d*$/.test(text)) {
       setAmount(text);
     }
   };
 
-  const handleSubmit = async () => { 
+  const handleSubmit = async () => {
     const dayIndex = getDayIndex();
     const copyData = [...barData];
     copyData[dayIndex].value += Number(amount);
@@ -175,6 +184,7 @@ export default function Index() {
         <TextInput
           placeholder="Enter amount in ml"
           inputMode="numeric"
+          keyboardType="number-pad"
           value={amount}
           onChangeText={handleInputChange}
           style={{
@@ -201,10 +211,8 @@ export default function Index() {
         </Pressable>
       </View>
 
-
-      <Button onButtonPress={handleChart}  title="ShowChart" />
+      <Button onButtonPress={handleChart} title="ShowChart" />
       <Button onButtonPress={handlePreviousData} title="Show Previous Data" />
-
     </View>
   );
 }

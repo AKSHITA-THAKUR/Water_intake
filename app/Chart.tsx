@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  ActivityIndicator,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-} from "react-native";
+import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BarChart } from "react-native-gifted-charts";
+import ChartBar from "@/components/ChartBar";
 import { useLocalSearchParams } from "expo-router";
-interface BarData {
+export interface BarData {
   value: number;
   label: string;
 }
@@ -31,7 +25,7 @@ export default function Chart() {
           return;
         }
 
-        const storedData = await AsyncStorage.getItem(key);  
+        const storedData = await AsyncStorage.getItem(key);
         if (storedData) {
           setBarData(JSON.parse(storedData));
         } else {
@@ -52,41 +46,31 @@ export default function Chart() {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <Text style={styles.header}>Weekly Water Intake</Text>
 
       {barData ? (
         <View style={styles.chartContainer}>
-          <BarChart
-            spacing={30}
-            maxValue={5000}
-            frontColor="pink"
-            noOfSections={5}
-            data={barData}
-            isThreeD
-            barWidth={22}
-            isAnimated
-          />
+          <ChartBar ChartData={barData} />
         </View>
       ) : (
         <Text style={styles.noData}>No data available</Text>
       )}
-    </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 20,
-    backgroundColor: "#f7f7f7",
+    backgroundColor: "#fff",
   },
   header: {
     fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 20,
-    color: "#333",
+    color: "grey",
   },
   chartContainer: {
     alignItems: "center",
@@ -98,9 +82,4 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
-  noKeys: {
-    textAlign: "center",
-    color: "#555",
-    marginTop: 10,
-  },
 });

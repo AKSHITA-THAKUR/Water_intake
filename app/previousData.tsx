@@ -9,7 +9,8 @@ import Button from "@/components/Button";
 const previousData = () => {
   const [weekKeys, setWeekKeys] = useState<string[]>([]);
   const router = useRouter();
-  const fetchWeekKeys = async () => {  // FETCH ALL THE KEYS WHICH STARTS WITH WEEK
+  const fetchWeekKeys = async () => {
+    // FETCH ALL THE KEYS WHICH STARTS WITH WEEK
     try {
       const allKeys = await AsyncStorage.getAllKeys();
       const filteredKeys = allKeys.filter((key) => key.startsWith("Week"));
@@ -35,7 +36,9 @@ const previousData = () => {
             <Button
               key={key}
               title={key}
-              onButtonPress={() => router.navigate(`/Chart?key=${key}`)}
+              onButtonPress={() =>
+                router.navigate({ pathname: "/Chart", params: { key: key } })
+              }
             />
           );
         })
@@ -53,17 +56,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#f7f7f7",
   },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20,
-    color: "#333",
-  },
-  chartContainer: {
-    alignItems: "center",
-    marginBottom: 20,
-  },
+
   noData: {
     textAlign: "center",
     color: "#555",
@@ -76,18 +69,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     color: "#444",
   },
-  pressable: {
-    backgroundColor: "#4CAF50",
-    padding: 15,
-    marginVertical: 10,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  pressableText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
+
   noKeys: {
     textAlign: "center",
     color: "#555",
