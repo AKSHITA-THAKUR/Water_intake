@@ -31,7 +31,7 @@ export default function Index() {
   };
 
   const getPreviousDayWeekLabel = () => {
-    // FUNCTION TO  GET THE WEEK AND THE MONTH
+    // FUNCTION TO  GET THE WEEK AND THE MONTH of PREVIOUS DAY WHEN IF WEEK STARTS ON MONDAY
     const currentDate = new Date();
     const previousDay = new Date(currentDate);
     previousDay.setDate(currentDate.getDate() - 1);
@@ -41,10 +41,11 @@ export default function Index() {
       previousDay.getMonth(),
       1
     );
-    const firstDayOfMonth = firstDateOfMonth.getDay();
+    let firstDayOfMonth = firstDateOfMonth.getDay();
+    firstDayOfMonth = (firstDayOfMonth === 0) ? 7 : firstDayOfMonth; // If want to count monday as frst day of week
     const today = previousDay.getDate();
-    const adjustedDay = today + firstDayOfMonth;
-    const weekNumber = Math.floor(adjustedDay / 7) + 1;
+    const adjustedDay = today + firstDayOfMonth -1;
+    const weekNumber = Math.floor((adjustedDay / 7)-1) + 1;
 
     return `Week ${weekNumber} of ${monthName}`;
   };
