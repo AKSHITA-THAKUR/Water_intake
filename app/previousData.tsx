@@ -1,8 +1,10 @@
 import { View, Text, Pressable } from "react-native";
 import { StyleSheet } from "react-native";
-import { Router, useRouter } from "expo-router";
+import { heightPercentageToDP as hp , widthPercentageToDP as wp  } from "react-native-responsive-screen";
+import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
 import { useState } from "react";
+import customeStyles from "@/Styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Button from "@/components/Button";
 
@@ -24,8 +26,8 @@ const previousData = () => {
     fetchWeekKeys();
   }, []);
   return (
-    <View style={styles.container}>
-      <Text style={styles.subHeader}>Previous Weeks data</Text>
+    <View style={[customeStyles.container , {justifyContent:"flex-start"}]}>
+      <Text style={[customeStyles.subHeading]}>Previous Weeks data</Text>
       {weekKeys.length > 0 ? (
         weekKeys.map((key) => {
           // Skip rendering a Pressable if the key is "WeekReset"
@@ -43,36 +45,11 @@ const previousData = () => {
           );
         })
       ) : (
-        <Text style={styles.noKeys}>No previous weeks found</Text>
+        <Text style={customeStyles.Text}>No previous weeks found</Text>
       )}
     </View>
   );
 };
 export default previousData;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#f7f7f7",
-  },
 
-  noData: {
-    textAlign: "center",
-    color: "#555",
-    marginBottom: 20,
-  },
-  subHeader: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 15,
-    alignItems: "center",
-    color: "#444",
-  },
-
-  noKeys: {
-    textAlign: "center",
-    color: "#555",
-    marginTop: 10,
-  },
-});

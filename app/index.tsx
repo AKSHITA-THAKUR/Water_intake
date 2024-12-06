@@ -1,9 +1,10 @@
 import { Text, View, TextInput, Pressable } from "react-native";
 import { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Button from "@/components/Button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import customeStyles from "../Styles"
 interface BarData {
   value: number;
   label: string;
@@ -46,7 +47,6 @@ export default function Index() {
     const today = previousDay.getDate();
     const adjustedDay = today + firstDayOfMonth -1;
     const weekNumber = Math.floor((adjustedDay / 7)-1) + 1;
-
     return `Week ${weekNumber} of ${monthName}`;
   };
 
@@ -147,38 +147,21 @@ export default function Index() {
 
   return (
     <View
-      style={{
-        flex: 1,
-        marginTop: 30,
-        paddingHorizontal: 20,
-        backgroundColor: "#f7f7f7",
-        justifyContent: "center",
-      }}
+      style={customeStyles.container}
     >
       <Text
-        style={{
-          fontSize: 24,
-          fontWeight: "bold",
-          textAlign: "center",
-          marginBottom: 20,
-          color: "#333",
-        }}
+        style={customeStyles.heading}
       >
         Weekly Water Intake
       </Text>
 
       <Text
-        style={{
-          fontSize: 18,
-          marginBottom: 15,
-          textAlign: "center",
-          color: "#555",
-        }}
+        style={customeStyles.subHeading}
       >
         You've consumed {barData[todayIndex].value} ml of water today.
       </Text>
 
-      <Text style={{ fontSize: 16, marginBottom: 10, color: "#333" }}>
+      <Text style={customeStyles.Text}>
         Enter the water amount you took on {Today}:
       </Text>
       <View style={{ flexDirection: "row", gap: 10, marginBottom: 20 }}>

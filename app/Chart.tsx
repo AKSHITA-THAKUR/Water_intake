@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { BarChart } from "react-native-gifted-charts";
 import ChartBar from "@/components/ChartBar";
+import { heightPercentageToDP } from "react-native-responsive-screen";
+import customeStyles from "@/Styles";
 import { useLocalSearchParams } from "expo-router";
 export interface BarData {
   value: number;
@@ -46,40 +47,19 @@ export default function Chart() {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Weekly Water Intake</Text>
+    <View style={[customeStyles.container , {marginTop:heightPercentageToDP(3)}]}>
+      <Text style={customeStyles.subHeading}>Weekly Water Intake</Text>
 
       {barData ? (
-        <View style={styles.chartContainer}>
+        <View style={{    alignItems: "center",
+          marginTop: 20,}}>
           <ChartBar ChartData={barData} />
         </View>
       ) : (
-        <Text style={styles.noData}>No data available</Text>
+        <Text style={customeStyles.Text}>No data available</Text>
       )}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    backgroundColor: "#fff",
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20,
-    color: "grey",
-  },
-  chartContainer: {
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  noData: {
-    textAlign: "center",
-    color: "#555",
-    marginBottom: 20,
-  },
 
-});
