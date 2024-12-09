@@ -1,14 +1,18 @@
 import { Text, View, TextInput, Pressable } from "react-native";
 import { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Button from "@/components/Button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LogLevel, OneSignal } from 'react-native-onesignal';
 import customeStyles from "../Styles"
 interface BarData {
   value: number;
   label: string;
 }
+OneSignal.Debug.setLogLevel(LogLevel.Verbose);
+OneSignal.initialize("cbaf8d4f-6a46-493b-9059-4d8b2706c46a");
+OneSignal.Notifications.requestPermission(true);
+
 
 export default function Index() {
   const router = useRouter();

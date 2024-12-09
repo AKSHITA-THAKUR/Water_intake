@@ -3,11 +3,12 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
+import { Codes } from "./colors";
 const customeStyles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: wp(7),
-    backgroundColor: "#f7f7f7",
+    backgroundColor: Codes.primaryBackground,
     marginTop:hp(10)
   },
   heading: {
@@ -15,12 +16,12 @@ const customeStyles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: hp(3),
-    color: "#333",
+    color: Codes.primaryText,
   },
   subHeading: {
     fontSize: hp(2.3),
     marginBottom: hp(2),
-    color: "#444",
+    color: Codes.secondaryText,
     textAlign:"center"
   },
   Text:{
