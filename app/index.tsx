@@ -3,18 +3,28 @@ import { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import Button from "@/components/Button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { LogLevel, OneSignal } from 'react-native-onesignal';
-import customeStyles from "../Styles"
+import { LogLevel, OneSignal } from "react-native-onesignal";
+import customeStyles from "../Styles";
 interface BarData {
   value: number;
   label: string;
 }
-OneSignal.Debug.setLogLevel(LogLevel.Verbose);
-OneSignal.initialize("cbaf8d4f-6a46-493b-9059-4d8b2706c46a");
-OneSignal.Notifications.requestPermission(true);
-
 
 export default function Index() {
+  // Remove this method to stop OneSignal Debugging
+  OneSignal.Debug.setLogLevel(LogLevel.Verbose);
+
+  // OneSignal Initialization
+  OneSignal.initialize("cbaf8d4f-6a46-493b-9059-4d8b2706c46a");
+
+  // requestPermission will show the native iOS or Android notification permission prompt.
+  // We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+  OneSignal.Notifications.requestPermission(true);
+
+  // Method for listening for notification clicks
+  OneSignal.Notifications.addEventListener("click", (event) => {
+    console.log("OneSignal: notification clicked:", event);
+  });
   const router = useRouter();
   const [amount, setAmount] = useState("");
 
@@ -47,10 +57,10 @@ export default function Index() {
       1
     );
     let firstDayOfMonth = firstDateOfMonth.getDay();
-    firstDayOfMonth = (firstDayOfMonth === 0) ? 7 : firstDayOfMonth; // If want to count monday as frst day of week
+    firstDayOfMonth = firstDayOfMonth === 0 ? 7 : firstDayOfMonth; // If want to count monday as frst day of week
     const today = previousDay.getDate();
-    const adjustedDay = today + firstDayOfMonth -1;
-    const weekNumber = Math.floor((adjustedDay / 7)-1) + 1;
+    const adjustedDay = today + firstDayOfMonth - 1;
+    const weekNumber = Math.floor(adjustedDay / 7 - 1) + 1;
     return `Week ${weekNumber} of ${monthName}`;
   };
 
@@ -150,18 +160,10 @@ export default function Index() {
   const Today = new Date().toLocaleString("en-US", { weekday: "long" });
 
   return (
-    <View
-      style={customeStyles.container}
-    >
-      <Text
-        style={customeStyles.heading}
-      >
-        Weekly Water Intake
-      </Text>
+    <View style={customeStyles.container}>
+      <Text style={customeStyles.heading}>Weekly Water Intake</Text>
 
-      <Text
-        style={customeStyles.subHeading}
-      >
+      <Text style={customeStyles.subHeading}>
         You've consumed {barData[todayIndex].value} ml of water today.
       </Text>
 
